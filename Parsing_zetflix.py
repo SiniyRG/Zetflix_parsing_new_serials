@@ -37,17 +37,18 @@ def parsing():
         now_webpage = f'page/{now_page}/'
     return return_num
 
+
 # Обработка сериала
 def parsing_page(url, name):
-    dict_serials = {'Имя_англ': '', 'Имя_ру': '', 'Жанр': [], 'Страна': [], 'Описание': ''}
+    dict_serials = {'Имя_англ': '', 'Имя_ру': '', 'Жанр': '', 'Страна': '', 'Описание': ''}
     soup = connection(url, name=name)
     # Общая информация сериала
     for tag in soup.find_all('ul', class_='finfo'):
         new_str = (tag.text.strip('\n').split('\n'))
-        dict_serials['Имя_англ'] = new_str[0][10:]
+        dict_serials['Имя_англ'] = new_str[0][10:].replace("'", "''")
         dict_serials['Имя_ру'] = name
-        dict_serials['Жанр'].append(new_str[1][6:].split(','))
-        dict_serials['Страна'].append(new_str[2][8:-1].split(','))
+        dict_serials['Жанр'] = (new_str[1][6:].split(','))
+        dict_serials['Страна'] = (new_str[2][8:-1].split(','))
 
     for tag in soup.find_all('div', attrs={'id': 'serial-kratko'}):
         dict_serials['Описание'] = tag.text.replace('\t', '').strip('\n')
@@ -70,9 +71,8 @@ def parsing_page(url, name):
                 release_date[num_series] = f'Выйдет {new_date}'
 
     dict_serials['Дата выхода'] = release_date
-    return (dict_serials)
+    return dict_serials
 
 
 if __name__ == '__main__':
     parsing()
-
