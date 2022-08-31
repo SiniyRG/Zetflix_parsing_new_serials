@@ -58,7 +58,8 @@ def parsing_page(url, name):
     release_date = {}
     new_arr = []
     # Дата выхода каждой серии
-    for tag in soup.find_all('div', attrs={'id': 'dateblock_1'}):
+    num_block = (len(soup.find_all('table')))
+    for tag in soup.find_all('div', attrs={'id': f'dateblock_{num_block}'}):
         for new_tag in tag.find_all('tr', attrs={'class': 'epscape_tr'}):
             new_arr.append(new_tag.text.strip('\n'))
 
