@@ -1,9 +1,9 @@
 import requests
 from bs4 import BeautifulSoup as bs
 import time
+from current_date import current_date
 
-
-def connection(url, name='', referer='https://31aug.zetflix-online.net/serials/ochen-strannye-dela/date/'):
+def connection(url, name='', referer=f'https://{current_date}.zetflix-online.net/serials/ochen-strannye-dela/date/'):
     sess = requests.Session()
     sess.trust_env = False
     sess.headers.update({
@@ -29,7 +29,7 @@ def parsing():
     now_webpage = ''
     return_num = []
     for now_page in range(2, 3):
-        soup = connection(f'https://31aug.zetflix-online.net/serials/new_serial/' + now_webpage)
+        soup = connection(f'https://{current_date}.zetflix-online.net/serials/new_serial/' + now_webpage)
         for tag in soup.find_all('a', class_='vi-img img-resp-h'):
             time.sleep(1)
             return_num.append(parsing_page(tag['href'], tag['alt']))
@@ -44,16 +44,16 @@ def parsing_page(url, name):
     soup = connection(url, name=name)
     # Общая информация сериала
     for tag in soup.find_all('ul', class_='finfo'):
-        new_str = (tag.text.strip('\n').split('\n'))
+        new_str = (tag.text.strip('\n').replace(" ", "").split('\n'))
         dict_serials['Имя_англ'] = new_str[0][10:].replace("'", "''")
         dict_serials['Имя_ру'] = name
-        dict_serials['Жанр'] = (new_str[1][6:].split(','))
-        dict_serials['Страна'] = (new_str[2][8:-1].split(','))
+        dict_serials['Жанр'] = (new_str[1][5:].split(','))
+        dict_serials['Страна'] = (new_str[2][7:].split(','))
 
     for tag in soup.find_all('div', attrs={'id': 'serial-kratko'}):
         dict_serials['Описание'] = tag.text.replace('\t', '').strip('\n')
 
-    soup = connection(url + 'date/', referer='https://31aug.zetflix-online.net/serials/ochen-strannye-dela/')
+    soup = connection(url + 'date/', referer=f'https://{current_date}.zetflix-online.net/serials/ochen-strannye-dela/')
 
     release_date = {}
     new_arr = []

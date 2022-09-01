@@ -68,7 +68,7 @@ try:
     # with connection.cursor() as cursor:
     #     cursor.execute(
     #         '''CREATE TABLE output_series
-    #         (id_serial integer REFERENCES serials (id_serial),
+    #         (id_serial integer REFERENCES serials (id_serial) ON DELETE CASCADE,
     #          number_serial varchar(10) NOT NULL,
     #          release text NOT NULL);'''
     #     )
@@ -89,7 +89,6 @@ try:
         # Добавление данных в таблицу страны
         with connection.cursor() as cursor:
             for country in parsing_value['Страна']:
-                country = country.strip(' ')
                 cursor.execute(
                     f'''INSERT INTO countries
                     (name_country)
@@ -99,7 +98,6 @@ try:
         # Добавление данных в таблицу жанры
         with connection.cursor() as cursor:
             for genre in parsing_value['Жанр']:
-                genre = genre.strip(' ')
                 cursor.execute(
                     f'''INSERT INTO genres
                     (name_genre)
@@ -107,13 +105,12 @@ try:
                 )
         # Добавление данных в таблицу жанры сериала
         with connection.cursor() as cursor:
-            name_serias = parsing_value['Имя_ру']
+            name_serial = parsing_value['Имя_ру']
             for genre in parsing_value['Жанр']:
-                genre = genre.strip(' ')
                 cursor.execute(
                     f'''with get_name as
                     (select id_serial from serials
-                    where name_ru = '{name_serias}'),
+                    where name_ru = '{name_serial}'),
                     get_genre as
                     (select id_genre from genres
                     where name_genre = '{genre}')
