@@ -20,7 +20,8 @@ def connection(url, name='', referer=f'https://{current_date}.zetflix-online.net
     except Exception as err:
         print(f"Ошибка поключения: {err} - {name}")
     else:
-        print(f"Подключение прошло успешно - {name}")
+        if name:
+            print(f"Подключение прошло успешно - {name}")
         soup = bs(r.text, 'lxml')
         return soup
 
@@ -29,7 +30,7 @@ def connection(url, name='', referer=f'https://{current_date}.zetflix-online.net
 def parsing():
     now_webpage = ''
     return_num = []
-    for now_page in range(2, 3):
+    for now_page in range(2, 5):
         soup = connection(f'https://{current_date}.zetflix-online.net/serials/new_serial/' + now_webpage)
         for tag in soup.find_all('a', class_='vi-img img-resp-h'):
             time.sleep(1)
