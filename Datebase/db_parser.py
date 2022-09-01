@@ -1,4 +1,4 @@
-from Parsing_zetflix import parsing
+from Parsing.Parsing_zetflix import parsing
 from config import host, user, password, db_name
 import psycopg2
 

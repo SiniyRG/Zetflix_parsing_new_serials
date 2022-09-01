@@ -1,7 +1,8 @@
 import requests
 from bs4 import BeautifulSoup as bs
 import time
-from current_date import current_date
+from Parsing.current_date import current_date
+
 
 def connection(url, name='', referer=f'https://{current_date}.zetflix-online.net/serials/ochen-strannye-dela/date/'):
     sess = requests.Session()
